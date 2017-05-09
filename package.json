@@ -1,0 +1,19 @@
+{
+  "name": "animate-server-2017",
+  "version": "1.0.0",
+  "description": "realtime chat with video and gifs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdavys/animate-server-2017.git"
+  },
+  "author": "José Saborío <jdavidsaboriom@outlook.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jdavys/animate-server-2017/issues"
+  },
+  "homepage": "https://github.com/jdavys/animate-server-2017#readme"
+}
