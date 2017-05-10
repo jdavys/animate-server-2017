@@ -1,23 +1,26 @@
 'use strict'
 
-const http = require('http');
-
+const http = require('http')
 // var de entorno
 const port = process.env.PORT || 8080
 const fs = require('fs')
 //manejo de rutas
-const path = require('path');
+const path = require('path')
+const router = require('./router')
 
 //crear un servidor web HTTP
-const server = http.createServer();
+const server = http.createServer()
 
 //eventos eventemitter
-server.on('request',onRequest);
-server.on('listening',onListening);
+server.on('request', router)
+server.on('listening',onListening)
 
 server.listen(port)
+function onListening(){
+  console.log(`Servidor escuchando en el port ${port}` )
+}
 
-function onRequest(req,res){
+/*function onRequest(req,res){
   let uri=req.url;
   if(uri.startsWith('/index') || uri ==='/'){
     return serverIndex(res);
@@ -27,7 +30,7 @@ function onRequest(req,res){
     return serverApp(res);
   }
   res.statusCode=404
-  res.end(`404 not found ${uri}`)
+  res.end(`404 not found ${uri}`)*/
   //res.end("Hola io.js");
   //let file = fs.readFileSync('public/index.html');
   //asincrono join concatenar rutas y dire
@@ -56,9 +59,9 @@ function onRequest(req,res){
     res.end(file)
   });*/
 
-}
+//}
 
-function serverIndex(res){
+/*function serverIndex(res){
   let index= path.join(__dirname,'public','index.html')
   res.setHeader('content-Type', 'text/html')
   let rs=fs.createReadStream(index)
@@ -80,7 +83,4 @@ function serverApp(res){
     res.setHeader('content-Type', 'text/plain')
     res.end(err.message)
   })
-}
-function onListening(){
-  console.log(`Servidor escuchando en el port ${port}` )
-}
+}*/
