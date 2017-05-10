@@ -21,13 +21,30 @@ function onRequest(req,res){
   //res.end("Hola io.js");
   //let file = fs.readFileSync('public/index.html');
   //asincrono join concatenar rutas y dire
-  let fileName= path.join(__dirname,'public','index.html');
-  fs.readFile(fileName,function(err,file){
-    if(err){
-      return res.end(err.message);
-    }
+  let index= path.join(__dirname,'public','index.html');
+
+  res.setHeader('content-Type', 'text/html');
+  //crear streams mecamismos leer archivos binario
+  let rs=fs.createReadStream(index) //lectura
+
+  //eventemitter streams no es recomendado
+  /*rs.on('data',function(chunk){
+
+  })*/
+
+  //pipe request stream de lect, respo stream escritura
+  rs.pipe(res)
+
+  rs.on('error',function(err){
+    res.end(err.message)
+  })
+  /*fs.readFile(index,function(err,file){
+    if(err) return res.end(err.message);
+
+    //definir la cabecera
+    res.setHeader('content-Type', 'text/html');
     res.end(file)
-  });
+  });*/
 
 }
 
