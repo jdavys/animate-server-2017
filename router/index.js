@@ -3,6 +3,9 @@ const st=require('st')
 const path = require('path')
 const route = course()
 const jsonBody = require('body/json')
+const helper = require('../helper')
+
+
 const mount = st({
   //la rura es relativa al directorio donde estoy, 1 mas arriba, en public
   path: path.join(__dirname,'..','public'),
@@ -12,12 +15,23 @@ const mount = st({
 
 route.post('/process',function(req,res){
     jsonBody(req,res,{limit: 3*1024*1024},function(err,body){
-    if(err) return fail(err.res)
-    console.log(body);
+      if(err) return fail(err.res)
+      //console.log(body);
 
-    res.setHeader('Content-Type','application/json')
+      if(Array.isArray(body.images)){
+        let converter =helper.convertVideo(body.images)
 
-    res.end(JSON.stringify({ok: true}))
+        converter.on('video',function(video){
+          res.setHeader('content-Type','application/json')
+          res.end(JSON.stringify({video:video}))
+        })
+      }else{
+        res.statusCode=500
+        res.end(JSON.stringify({error: 'parameter `images` is required'}))
+      }
+      //res.setHeader('Content-Type','application/json')
+
+      //res.end(JSON.stringify({ok: true}))
   })
 })
 

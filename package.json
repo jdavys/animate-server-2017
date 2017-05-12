@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/jdavys/animate-server-2017#readme",
   "dependencies": {
+    "async": "^2.4.0",
     "body": "^5.1.0",
     "course": "0.0.1",
     "st": "^1.2.0",
