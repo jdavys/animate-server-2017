@@ -4,7 +4,10 @@
   "description": "realtime chat with video and gifs",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-js": "browserify cliente/app.js -o public/app.js",
+    "postinstall": "npm run build-js",
+    "start" : "node server.js"
   },
   "repository": {
     "type": "git",
