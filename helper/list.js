@@ -2,7 +2,7 @@
 const fs = require('fs')
 
 module.exports= function(folder,filter,callback){
-  fs,readDir(folder,unReadDir)
+  fs.readdir(folder,unReadDir)
 
   //callback
   function unReadDir(err,results){
