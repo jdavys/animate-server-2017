@@ -10,18 +10,20 @@ const EventEmitter = require('events').EventEmitter //modulo del core
 const dataUriBuffer = require('data-uri-to-buffer')
 const listFiles = require('./list');
 const ffmpeg = require('./ffmpeg');
+const concat = require('concat-stream');
 
 module.exports = function(images){
   let events= new EventEmitter()
   let count=0
   let baseName=uuid.v4()
   let tmpDir = os.tmpDir()
+  let video
 
   async.series([
     decodeImages,
     createVideo,
-    encodeVideo
-    //cleanup
+    encodeVideo,
+    cleanup
   ], convertFinishing)
 
   function decodeImages(done){
@@ -42,7 +44,7 @@ module.exports = function(images){
   }
 
   function createVideo(done){
-    events.emit('log','creating video')
+    events.emit('log',`video ${fileName}`)
     ffmpeg({
       baseName: baseName,
       folder: tmpDir
@@ -50,7 +52,13 @@ module.exports = function(images){
   }
 
   function encodeVideo(done){
-    done()
+    let fileName = `${baseName}.webm`
+    let rs= fs.createReadStream(path.join(tmpDir,fileName))
+    rs.pipe(concat(function(videoBuffer){
+      video=`data:video/webm;base64,${videoBuffer.toString('base64')}`
+      done()
+    }))
+    rs.on('error',done)
   }
 
 
@@ -79,9 +87,13 @@ module.exports = function(images){
   }
 
   function convertFinishing(err){
-    setTimeout(function(){
-      events.emit('video','this will be the encoded video')
-    },1000)
+    // setTimeout(function(){
+    //   events.emit('video','this will be the encoded video')
+    // },1000)
+
+    if(err) return events.emit('error',err)
+
+    events.emit('video',video)
   }
 
 

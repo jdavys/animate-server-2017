@@ -22,6 +22,7 @@
   "dependencies": {
     "async": "^2.4.0",
     "body": "^5.1.0",
+    "concat-stream": "^1.6.0",
     "course": "0.0.1",
     "data-uri-to-buffer": "0.0.4",
     "st": "^1.2.0",
