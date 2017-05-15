@@ -1,9 +1,8 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 const xhr = require('xhr')
-const webrtc2images = require('webrtc2images')
-const record = document.querySelector('#record');
+const Webrtc2Images = require('webrtc2images')
 
-const rtc = new webrtc2images({
+const rtc = new Webrtc2Images({
   width: 200,
   height: 200,
   frames: 10,
@@ -12,18 +11,18 @@ const rtc = new webrtc2images({
   interval: 200
 })
 
-rtc.startVideo(function(err){
+rtc.startVideo(function (err) {
   if (err) return logError(err)
 })
 
+const record = document.querySelector('#record')
 
-record.addEventListener('click',function(e){
-  e.preventDefault();
+record.addEventListener('click',  function (e) {
+  e.preventDefault()
 
-  //grabar
-  rtc.recordVideo(function(err,frames){
+  rtc.recordVideo(function (err, frames) {
     if (err) return logError(err)
-    //console.log(frames);
+
     xhr({
       uri: '/process',
       method: 'post',
@@ -35,9 +34,8 @@ record.addEventListener('click',function(e){
       console.log(JSON.parse(body))
     })
 
-    })
-
-  },false)
+  })
+}, false)
 
 function logError (err) {
   console.error(err)
@@ -59,7 +57,7 @@ function forEach(list, iterator, context) {
     if (arguments.length < 3) {
         context = this
     }
-
+    
     if (toString.call(list) === '[object Array]')
         forEachArray(list, iterator, context)
     else if (typeof list === 'string')
