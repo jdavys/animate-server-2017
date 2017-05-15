@@ -8,6 +8,7 @@ const os = require('os')
 const async = require('async')
 const EventEmitter = require('events').EventEmitter //modulo del core
 const dataUriBuffer = require('data-uri-to-buffer')
+const listFiles = require('./list');
 
 module.exports = function(images){
   let events= new EventEmitter()
