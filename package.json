@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "npm run build-js",
-    "build-js": "browserify cliente/app.js -o public/app.js",
+    "build-js": "browserify -t hbsfy cliente/app.js -o public/app.js",
     "start": "node server.js"
   },
   "repository": {
@@ -25,12 +25,14 @@
     "concat-stream": "^1.6.0",
     "course": "0.0.1",
     "data-uri-to-buffer": "0.0.4",
+    "handlebars": "^4.0.8",
     "st": "^1.2.0",
     "uuid": "^3.0.1",
     "webrtc2images": "^1.4.4",
     "xhr": "^2.4.0"
   },
   "devDependencies": {
-    "browserify": "^14.3.0"
+    "browserify": "^14.3.0",
+    "hbsfy": "^2.7.0"
   }
 }

@@ -1,5 +1,10 @@
 const xhr = require('xhr')
+const domify = require('domify')
+//const io = require('socket.io-client')
 const Webrtc2Images = require('webrtc2images')
+const messageTpl = require('./template/message.hbs')
+
+io.connect()
 
 const rtc = new Webrtc2Images({
   width: 200,
@@ -14,10 +19,20 @@ rtc.startVideo(function (err) {
   if (err) return logError(err)
 })
 
-const record = document.querySelector('#record')
+const messages = document.querySelector('#messages')
+const form = document.querySelector('form')
 
-record.addEventListener('click',  function (e) {
+form.addEventListener('submit', function (e) {
   e.preventDefault()
+  record()
+
+}, false)
+
+
+function record () {
+  const input = document.querySelector('input[name="message"]')
+  const message = input.value
+  input.value = ""
 
   rtc.recordVideo(function (err, frames) {
     if (err) return logError(err)
@@ -29,19 +44,22 @@ record.addEventListener('click',  function (e) {
       body: JSON.stringify({ images: frames }),
     }, function (err, res, body) {
       if (err) return logError(err)
-      body = JSON.parse(body)
-      //console.log(JSON.parse(body)// convierte string json a object javascript
 
-      if(body.video){
-        const video = document.querySelector('#video')
-        video.src = body.video
-        video.loop = true
-        video.play()
+      body = JSON.parse(body)
+
+      if (body.video) {
+        addMessage({ message: message, video: body.video })
       }
     })
 
   })
-}, false)
+}
+
+function addMessage (message) {
+  const m = messageTpl(message)
+  messages.appendChild(domify(m))
+  window.scrollTo(0, document.body.scrollHeight)
+}
 
 function logError (err) {
   console.error(err)
