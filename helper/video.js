@@ -44,7 +44,7 @@ module.exports = function(images){
   }
 
   function createVideo(done){
-    events.emit('log',`video ${fileName}`)
+    events.emit('log',`video ${baseName}`)
     ffmpeg({
       baseName: baseName,
       folder: tmpDir
@@ -54,6 +54,9 @@ module.exports = function(images){
   function encodeVideo(done){
     let fileName = `${baseName}.webm`
     let rs= fs.createReadStream(path.join(tmpDir,fileName))
+
+    events.emit('log', `Encoding video ${fileName}`)
+
     rs.pipe(concat(function(videoBuffer){
       video=`data:video/webm;base64,${videoBuffer.toString('base64')}`
       done()
@@ -95,9 +98,6 @@ module.exports = function(images){
 
     events.emit('video',video)
   }
-
-
-
   return events
 
 }

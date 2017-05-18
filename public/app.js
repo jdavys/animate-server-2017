@@ -30,8 +30,15 @@ record.addEventListener('click',  function (e) {
       body: JSON.stringify({ images: frames }),
     }, function (err, res, body) {
       if (err) return logError(err)
+      body = JSON.parse(body)
+      //console.log(JSON.parse(body)// convierte string json a object javascript
 
-      console.log(JSON.parse(body))
+      if(body.video){
+        const video = document.querySelector('#video')
+        video.src = body.video
+        video.loop = true
+        video.play()
+      }
     })
 
   })
